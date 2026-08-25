@@ -784,7 +784,7 @@ import {
 import { offeringsApi, courseTypesApi, sessionsApi } from '../api'
 
 const route = useRoute()
-const offeringId = route.params.id
+const offeringId = computed(() => route.params.id)
 
 // ---- 页面数据 ----
 const pageLoading = ref(false)
@@ -1150,13 +1150,13 @@ const confirmingKey = ref('')
 
 const readinessBlockers = computed(() => {
   if (!readiness.value) return []
-  return readiness.value.blockers.map((text) => {
+  return (readiness.value.blockers || []).map((text) => {
     if (text.includes('尚未审查确认') && readiness.value.content_model) {
       return { key: 'content_model', text, confirmType: 'model', confirmLabel: '去审查并纠正' }
     }
     const match = text.match(/^(课程标准|授课计划|教学设计|实训资料)模板规则尚未确认$/)
     if (match) {
-      const tpl = readiness.value.templates[match[1]]
+      const tpl = (readiness.value.templates || {})[match[1]]
       if (tpl && tpl.analysis_status !== '未分析') {
         return { key: `template_${match[1]}`, text, confirmType: 'template', templateFileId: tpl.template_file_id, confirmLabel: '确认规则' }
       }

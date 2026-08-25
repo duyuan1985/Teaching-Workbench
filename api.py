@@ -1823,29 +1823,6 @@ def update_session(session_id: int, body: SessionUpdate):
 
 
 # ============================================================
-# 教学单元
-# ============================================================
-
-class CurriculumUnitUpdate(BaseModel):
-    project_title: str = ""
-    suggested_hours: int = 0
-    review_action: str = ""
-    revised_focus: str = ""
-    rationale: str = ""
-
-
-@app.put("/api/curriculum-units/{unit_id}")
-def update_curriculum_unit(unit_id: int, body: CurriculumUnitUpdate):
-    with store.connect() as db:
-        db.execute(
-            "UPDATE curriculum_units SET project_title=?, suggested_hours=?, review_action=?, revised_focus=?, rationale=? WHERE id=?",
-            (body.project_title, body.suggested_hours, body.review_action, body.revised_focus, body.rationale, unit_id),
-        )
-        db.commit()
-    return {"status": "ok"}
-
-
-# ============================================================
 # 内容更新建议
 # ============================================================
 

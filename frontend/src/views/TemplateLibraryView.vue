@@ -69,7 +69,7 @@
       </div>
 
       <div v-if="contractLoading" v-loading="true" style="height: 200px"></div>
-      <template v-else-if="contract">
+      <template v-else-if="contract && contract.content_json && contract.structural_json">
         <el-alert v-if="contract.status === '已确认'" type="success" show-icon class="mb16" :closable="false"
           :title="`该契约已于 ${contract.confirmed_at} 确认（v${contract.version}），重新解析将生成新版本`" />
         <el-alert v-else type="info" show-icon class="mb16" :closable="false"
@@ -78,10 +78,10 @@
         <el-tabs v-model="tab">
           <el-tab-pane label="槽位契约" name="slots">
             <div class="mb16" style="color: var(--el-text-color-secondary); font-size: 13px">
-              共 {{ contract.slots.length }} 个槽位：A=事实提取，B=AI润色，C=结构生成，人工=手工填写。
+              共 {{ contract.slots?.length || 0 }} 个槽位：A=事实提取，B=AI润色，C=结构生成，人工=手工填写。
               低置信度槽位须逐一核对后方可确认契约。
             </div>
-            <el-table :data="contract.slots" border stripe size="small" max-height="480">
+            <el-table :data="contract.slots || []" border stripe size="small" max-height="480">
               <el-table-column prop="section_title" label="章节" min-width="120" show-overflow-tooltip />
               <el-table-column label="字段" min-width="120">
                 <template #default="{ row }">
@@ -195,8 +195,8 @@
                 </template>
               </el-table-column>
             </el-table>
-            <h3 class="section-title">表格结构（{{ contract.structural_json.tables.length }} 个）</h3>
-            <el-table :data="contract.structural_json.tables" border size="small">
+            <h3 class="section-title">表格结构（{{ contract.structural_json.tables?.length || 0 }} 个）</h3>
+            <el-table :data="contract.structural_json.tables || []" border size="small">
               <el-table-column prop="index" label="#" width="50" align="center" />
               <el-table-column prop="role" label="角色" min-width="140" />
               <el-table-column label="尺寸" width="90" align="center">
@@ -322,7 +322,7 @@ async function patchSlot(row, field, value) {
 }
 
 async function handleConfirm() {
-  const pending = contract.value.slots.filter((s) => s.confidence === '低' && s.approval_status !== '已确认')
+  const pending = (contract.value?.slots || []).filter((s) => s.confidence === '低' && s.approval_status !== '已确认')
   if (pending.length) {
     ElMessage.warning(`还有 ${pending.length} 个低置信度槽位未核对`)
     return

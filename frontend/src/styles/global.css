@@ -1,0 +1,132 @@
+:root {
+  --primary: #1672b8;
+  --header-bg: #102a43;
+  --bg: #f3f6fa;
+  --panel-bg: #fff;
+  --border: #dbe4ee;
+  --text: #243b53;
+  --muted: #64748b;
+  --danger: #c0392b;
+  --success: #188038;
+  --warning: #f9ab00;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.page-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.panel h2 {
+  font-size: 18px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.badge {
+  background: #e3eaf1;
+  color: var(--text);
+  border-radius: 10px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.status-ok { color: var(--success); }
+.status-warn { color: var(--warning); }
+.status-err { color: var(--danger); }
+
+.el-table {
+  font-size: 13px;
+}
+
+.workflow-steps {
+  display: flex;
+  gap: 0;
+  margin-bottom: 20px;
+}
+
+.workflow-step {
+  flex: 1;
+  padding: 10px 8px;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-right: none;
+  font-size: 13px;
+  position: relative;
+}
+
+.workflow-step:first-child { border-radius: 8px 0 0 8px; }
+.workflow-step:last-child { border-radius: 0 8px 8px 0; border-right: 1px solid var(--border); }
+
+.workflow-step.done {
+  border-color: #72c48a;
+  background: #f0fbf3;
+  color: var(--success);
+}
+
+.workflow-step.current {
+  border-color: var(--primary);
+  background: #eef7ff;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.workflow-step .step-num {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  border-radius: 50%;
+  background: var(--border);
+  color: var(--text);
+  font-size: 12px;
+  margin-right: 4px;
+}
+
+.workflow-step.done .step-num { background: var(--success); color: white; }
+.workflow-step.current .step-num { background: var(--primary); color: white; }
